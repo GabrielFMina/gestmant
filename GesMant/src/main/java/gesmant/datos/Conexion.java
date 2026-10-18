@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 /**
  * Abre la conexion con la base de datos MySQL mediante JDBC.
- * Modificar URL, USUARIO y CLAVE segun la instalacion local (por ejemplo, se uso XAMPP).
+ * Modificar URL, USUARIO y CLAVE segun la instalacion local (por ejemplo XAMPP).
  */
 public class Conexion {
 

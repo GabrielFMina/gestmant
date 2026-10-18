@@ -1,19 +1,16 @@
 package gesmant.modelo;
 
-/** Persona que ejecuta los trabajos. */
-public class Tecnico {
+/** Persona que ejecuta los trabajos. Hereda nombre y telefono de Persona. */
+public class Tecnico extends Persona {
 
     private int idTecnico;
-    private String nombre;
     private String especialidad;
-    private String telefono;
     private boolean activo;
 
     public Tecnico(int idTecnico, String nombre, String especialidad, String telefono, boolean activo) {
+        super(nombre, telefono);
         this.idTecnico = idTecnico;
-        this.nombre = nombre;
         this.especialidad = especialidad;
-        this.telefono = telefono;
         this.activo = activo;
     }
 
@@ -21,16 +18,8 @@ public class Tecnico {
         return idTecnico;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
     public String getEspecialidad() {
         return especialidad;
-    }
-
-    public String getTelefono() {
-        return telefono;
     }
 
     public boolean isActivo() {
@@ -38,7 +27,12 @@ public class Tecnico {
     }
 
     @Override
-    public String toString() {
-        return nombre;
+    public String getTipo() {
+        return "Técnico";
+    }
+
+    @Override
+    public String getDescripcion() {
+        return especialidad + (activo ? "" : " (dado de baja)");
     }
 }

@@ -1,7 +1,7 @@
 # GesMant - Prototipo
 
 Sistema de gestión de órdenes de trabajo para mantenimiento edilicio.
-Trabajo Práctico 2 - Seminario de Práctica (INF275) - Universidad Siglo 21.
+Trabajos Prácticos 2 y 3 - Seminario de Práctica (INF275) - Universidad Siglo 21.
 Autor: Gabriel Fernando Mina.
 
 Este repositorio contiene todo lo que el informe referencia: los scripts SQL, el código
@@ -16,15 +16,19 @@ sql/
   03_consultas.sql                consultas C1 a C10
   04_actualizacion_y_borrado.sql  ejemplos de UPDATE y DELETE, con verificación
 src/main/java/gesmant/
-  Main.java                       punto de entrada
-  modelo/                         clases del dominio (OrdenTrabajo, Presupuesto, ...)
+  Main.java                       punto de entrada de la versión con ventanas (TP2)
+  consola/                        versión de consola con menús (TP3): AppConsola, Menu,
+                                  MenuAdministrador, MenuTecnico
+  estructuras/                    ListaEnlazada, Cola, Pila y Algoritmos (ordenación y búsqueda)
+  modelo/                         clases del dominio (Persona, Tecnico, Inquilino, OrdenTrabajo, ...)
   datos/                          Conexion y clases DAO (acceso a MySQL con JDBC)
   logica/                         GestorOrdenes: reglas del negocio
   vista/                          pantallas Swing (login, administración, técnico)
-  pruebas/PruebasSistema.java     32 casos de prueba automáticos
+  pruebas/PruebasSistema.java     32 casos de prueba con base de datos
+  pruebas/PruebasEstructuras.java 11 casos de prueba de estructuras y algoritmos (sin base)
 docs/
   diagramas/                      diagramas UML y DER
-  capturas/                       pantallas del prototipo
+  capturas/                       pantallas de la versión con ventanas
 pom.xml                           proyecto Maven (solo depende de mysql-connector-j)
 ```
 
@@ -46,7 +50,7 @@ Se ejecutan en MySQL Workbench o phpMyAdmin (XAMPP) en el orden indicado.
 3. Si el usuario o la clave de MySQL no son `root` / vacía, cambiarlos en `datos/Conexion.java`.
 4. Abrir la carpeta como proyecto Maven en IntelliJ IDEA o NetBeans (descarga el driver solo).
    Sin Maven: agregar `mysql-connector-j-8.x.jar` a las librerías del proyecto.
-5. Ejecutar `gesmant.Main`.
+5. Ejecutar `gesmant.Main` (versión con ventanas) o `gesmant.consola.AppConsola` (versión de consola del TP3).
 
 | Usuario  | Clave    | Rol           |
 |----------|----------|---------------|
@@ -54,7 +58,28 @@ Se ejecutan en MySQL Workbench o phpMyAdmin (XAMPP) en el orden indicado.
 | gmina    | tec123   | Técnico       |
 | lpereyra | tec123   | Técnico       |
 
-## Ejemplos de funcionamiento
+## Versión de consola (TP3)
+
+`gesmant.consola.AppConsola` pide usuario y clave (3 intentos) y abre el menú según el rol.
+Usa la misma base de datos y las mismas reglas de negocio (GestorOrdenes) que la versión con ventanas.
+
+| Concepto | Dónde está |
+|---|---|
+| Abstracción | `Persona` y `Menu` son clases abstractas con métodos abstractos |
+| Herencia | `Tecnico` e `Inquilino` heredan de `Persona`; `MenuAdministrador` y `MenuTecnico` de `Menu` |
+| Polimorfismo | `Menu menu = new MenuAdministrador(...)` o `new MenuTecnico(...)`; `getTipo()` y `getDescripcion()` en la opción "Ver contactos" |
+| Encapsulamiento | atributos privados con getters y `setNombre()` que valida el dato |
+| Estructuras de datos | `ListaEnlazada` (órdenes en memoria), `Cola` (reclamos pendientes de asignar), `Pila` (últimas acciones de la sesión) |
+| Ordenación y búsqueda | burbuja por prioridad, inserción por código, búsqueda binaria por código y secuencial por estado (`Algoritmos`) |
+| Excepciones | `NumberFormatException` al leer números, `ReglaNegocioException`, `SQLException`, `IllegalArgumentException`, `IllegalStateException` |
+
+Ejemplo de uso con los datos de prueba:
+- Ingresar como `admin` / `admin123`, opción 1: lista las órdenes de la más urgente a la menos urgente.
+- Opción 2 con `OT-0099`: informa que la orden no existe. Escribir letras en "Opción" vuelve a pedir el número.
+- Opción 4 registra un reclamo y lo agrega a la cola; la opción 5 asigna el primero que llegó (OT-0008).
+- Ingresar como `gmina` / `tec123`, opción 2 con `OT-0006`: no deja iniciar porque depende de OT-0005.
+
+## Ejemplos de funcionamiento (versión con ventanas)
 
 Todos los ejemplos parten de la base recién cargada con los scripts 01 y 02.
 
@@ -93,6 +118,7 @@ aparece OT-0001. *Ver detalle* muestra presupuestos, llaves, materiales, fotos y
 
 Volver a cargar los scripts 01 y 02 (las pruebas modifican datos) y ejecutar
 `gesmant.pruebas.PruebasSistema`. Debe mostrar `32 correctas, 0 fallidas`.
+`gesmant.pruebas.PruebasEstructuras` no necesita base de datos y debe mostrar `11 correctas, 0 fallidas`.
 Incluye el caso CPF04 del informe (partición de equivalencia y valores de frontera
 sobre las 72 h de espera: -1, 0, 1, 71, 72 y 73 horas).
 

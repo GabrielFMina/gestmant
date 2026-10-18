@@ -29,6 +29,7 @@ src/main/java/gesmant/
 docs/
   diagramas/                      diagramas UML y DER
   capturas/                       pantallas de la versión con ventanas
+  capturas_consola/               salida de la versión de consola (TP3)
 pom.xml                           proyecto Maven (solo depende de mysql-connector-j)
 ```
 
@@ -73,7 +74,7 @@ Usa la misma base de datos y las mismas reglas de negocio (GestorOrdenes) que la
 | Ordenación y búsqueda | burbuja por prioridad, inserción por código, búsqueda binaria por código y secuencial por estado (`Algoritmos`) |
 | Excepciones | `NumberFormatException` al leer números, `ReglaNegocioException`, `SQLException`, `IllegalArgumentException`, `IllegalStateException` |
 
-Ejemplo de uso con los datos de prueba:
+Ejemplo de uso con los datos de prueba (con la base recién cargada con los scripts 01 y 02):
 - Ingresar como `admin` / `admin123`, opción 1: lista las órdenes de la más urgente a la menos urgente.
 - Opción 2 con `OT-0099`: informa que la orden no existe. Escribir letras en "Opción" vuelve a pedir el número.
 - Opción 4 registra un reclamo y lo agrega a la cola; la opción 5 asigna el primero que llegó (OT-0008).

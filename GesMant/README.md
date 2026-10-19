@@ -29,7 +29,6 @@ src/main/java/gesmant/
 docs/
   diagramas/                      diagramas UML y DER
   capturas/                       pantallas de la versión con ventanas
-  capturas_consola/               salida de la versión de consola (TP3)
 pom.xml                           proyecto Maven (solo depende de mysql-connector-j)
 ```
 
